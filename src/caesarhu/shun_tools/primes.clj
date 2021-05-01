@@ -41,16 +41,17 @@
                         2 6 6 4 2 4 6 2 6 4 2 4 2 10 2 10])]
       (primes-from 11 wheel)))))
 
-(defn prime-factors-of [^long n]
-  (let [q (long (Math/sqrt n))]
+(defn prime-factors-of
+  [n]
+  (let [sqr (first (math/exact-integer-sqrt n))]
     (loop [n n
-           p primes
-           res nil]
-      (let [d (long (first p))]
+           prime-seq primes
+           result []]
+      (let [p (first prime-seq)]
         (cond
-          (or (> d q) (= n d)) (cons n res)
-          (zero? (rem n d))    (recur (quot n d) p (cons d res))
-          :else                (recur n (next p) res))))))
+          (or (> p sqr) (= n p)) (cons n result)
+          (zero? (rem n p)) (recur (quot n p) prime-seq (cons p result))
+          :else (recur n (next prime-seq) result))))))
 
 (def composites 
   (remove is-prime? (iterate inc 2)))
