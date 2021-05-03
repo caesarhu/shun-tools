@@ -1,6 +1,6 @@
 (ns caesarhu.shun-tools.math-misc
-  (:require [clojure.math.numeric-tower :as math])
-  (:use [caesarhu.shun-tools.primes]))
+  (:require [clojure.math.numeric-tower :as math]
+            [caesarhu.shun-tools.primes :refer :all]))
 
 (def integers (iterate inc 1))
 
@@ -125,4 +125,21 @@
 (defn aliquot-sum [n]
   (- (sigma 1 n) n))
 
+(def any? (complement not-any?))
 
+(defn quadratic-root
+  [a b c]
+  (let [discriminant (- (* b b) (* 4 a c))]
+    (if (neg? discriminant)
+      []
+      (let [sqr (math/sqrt discriminant)
+            deno (* 2 a)]
+        [(/ (+ (- b) sqr) deno) (/ (- (- b) sqr) deno)]))))
+
+(defn quadratic-root-pred?
+  [pred a b c]
+  (any? pred (quadratic-root a b c)))
+
+(defn is-Hexagonal?
+  [x]
+  (quadratic-root-pred? pos-int? 2 -1 (- x)))
