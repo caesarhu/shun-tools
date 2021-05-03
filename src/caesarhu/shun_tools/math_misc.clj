@@ -140,6 +140,6 @@
   [pred a b c]
   (any? pred (quadratic-root a b c)))
 
-(defn is-Hexagonal?
+(defn is-hexagonal?
   [x]
   (quadratic-root-pred? pos-int? 2 -1 (- x)))
