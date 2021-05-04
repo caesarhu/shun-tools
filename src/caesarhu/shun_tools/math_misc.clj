@@ -46,8 +46,8 @@
 (defn to-number 
   "Convert a collection of digits to a number"
   ([xs] (to-number xs 10))
-  ([xs ^long radix]
-   (let [index (cons 1 (reductions * (repeat radix)))]
+  ([xs radix]
+   (let [index (map #(math/expt radix %) (range))]
      (reduce + (map * index (reverse xs))))))
 
 (defn char-to-int [c]
