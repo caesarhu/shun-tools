@@ -10,17 +10,17 @@
   (let [sqrt (Math/sqrt n)]
     (== sqrt (int sqrt))))
 
-(defn triangle [^long n] (quot (* n (inc n)) 2))
+(defn triangle [n] (quot (* n (inc n)) 2))
 
-(defn square [^long n] (* n n))
+(defn square [n] (* n n))
 
-(defn pentagon [^long n] (quot (* n (dec (* 3 n))) 2))
+(defn pentagon [n] (quot (* n (dec (* 3 n))) 2))
 
-(defn hexagon [^long n] (* n (dec (* 2 n))))
+(defn hexagon [n] (* n (dec (* 2 n))))
 
-(defn heptagon [^long n] (quot (* n (- (* 5 n) 3)) 2))
+(defn heptagon [n] (quot (* n (- (* 5 n) 3)) 2))
 
-(defn octagon [^long n] (* n (- (* 3 n) 2)))
+(defn octagon [n] (* n (- (* 3 n) 2)))
 
 (defn number-seq [f] (map f integers))
 
@@ -32,14 +32,14 @@
 
 (def centred-hexagonal-numbers (map centred-hexagon integers))
 
-(defn triangle-root [^long n]
+(defn triangle-root [n]
   (/ (dec (math/sqrt (inc (* 8 n)))) 2))
 
-(defn is-triangular? [^long n]
+(defn is-triangular? [n]
   (let [root (triangle-root n)]
     (== root (int root))))
 
-(defn is-pentagonal? [^long x]
+(defn is-pentagonal? [x]
   (let [n (/ (inc (math/sqrt (inc (* 24 x)))) 6)]
     (== n (int n))))
 
@@ -58,7 +58,7 @@
 
 (defn digits 
   ([n] (digits n 10))
-  ([n ^long radix]
+  ([n radix]
    (loop [n n
           res nil]
      (if (zero? n)
@@ -78,15 +78,15 @@
     (fn [n]
       (first (drop n factorial-seq)))))
 
-(defn sum-of [func ^long n]
+(defn sum-of [func n]
   (->> (digits n)
        (map func)
        (reduce +)))
 
 (def divisors
   (memoize
-    (fn [^long n]
-      (let [f (fn [^long d xs]
+    (fn [n]
+      (let [f (fn [d xs]
                   (cond
                     (<= d 1)          (cons 1 xs) 
                     (zero? (rem n d)) (recur (dec d) (cons d xs))

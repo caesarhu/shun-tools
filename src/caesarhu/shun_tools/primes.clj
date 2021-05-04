@@ -84,9 +84,8 @@
    are relatively prime to n. That is, if n is a positive integer, then 
    φ(n) is the number of integers k in the range 1 ≤ k ≤ n for which 
    gcd(n, k) = 1"
-  [^long n]
+  [n]
   (->> (prime-factors-of n)
        distinct
        (map #(- 1 (/ 1 %))) 
-       (reduce * n)
-       long))
+       (reduce * n)))
