@@ -28,18 +28,22 @@
         :else (test-prime x)))))
 
 (def primes
-  (concat 
-   [2 3 5 7]
-   (lazy-seq
-    (let [primes-from (fn primes-from [n [f & r]]
-                        (if (some #(zero? (rem n %))
-                                  (take-while #(<= (* % %) n) primes))
-                          (recur (+ n f) r)
-                          (lazy-seq (cons n (primes-from (+ n f) r)))))
-          wheel (cycle [2 4 2 4 6 2 6 4 2 4 6 6 2 6  4  2
-                        6 4 6 8 4 2 4 2 4 8 6 4 6 2  4  6
-                        2 6 6 4 2 4 6 2 6 4 2 4 2 10 2 10])]
-      (primes-from 11 wheel)))))
+  (letfn [(enqueue [sieve n step]
+            (let [m (+ n step)]
+              (if (sieve m)
+                (recur sieve m step)
+                (assoc sieve m step))))
+          (next-sieve [sieve n]
+            (if-let [step (sieve n)]
+              (-> sieve
+                  (dissoc n)
+                  (enqueue n step))
+              (enqueue sieve n (+ n n))))
+          (next-primes [sieve n]
+            (if (sieve n)
+              (recur (next-sieve sieve n) (+ n 2))
+              (cons n (lazy-seq (next-primes (next-sieve sieve n) (+ n 2))))))]
+    (cons 2 (lazy-seq (next-primes {} 3)))))
 
 (defn prime-factors-of
   [n]
