@@ -17,15 +17,14 @@
           (zero? (mod x (+ 2 iter)))) false
       :else (recur (+ 6 iter) top))))
 
-(def is-prime?
+(defn is-prime?
+  [x]
   "Determines if a given integer is prime."
-  (memoize
-    (fn [x]
-      (cond
-        (<= x 3) (< 1 x)
-        (or (zero? (mod x 2))
-            (zero? (mod x 3))) false
-        :else (test-prime x)))))
+  (cond
+    (<= x 3) (< 1 x)
+    (or (zero? (mod x 2))
+        (zero? (mod x 3))) false
+    :else (test-prime x)))
 
 (def primes
   (letfn [(enqueue [sieve n step]
