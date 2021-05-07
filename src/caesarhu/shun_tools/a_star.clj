@@ -27,5 +27,5 @@
                             (dissoc open e)
                             (into {} (for [[n ns] (neighbors e)
                                            :when (not (get closed n))]
-                                       [n [(+ ns s (est-cost n)) e]])))+
+                                       [n [(+ ns s (est-cost n)) e]])))
                 (assoc closed e [s p]))))))
