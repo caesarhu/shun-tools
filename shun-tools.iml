@@ -11,6 +11,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Deps: org.clojure/clojure:1.10.3" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/math.numeric-tower:0.0.4" level="project" />
+    <orderEntry type="library" name="Deps: org.clojure/data.priority-map:1.0.0" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/test.check:1.1.0" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/spec.alpha:0.2.194" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/core.specs.alpha:0.2.56" level="project" />

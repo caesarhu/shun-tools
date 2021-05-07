@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
-        org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
+        org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
+        org.clojure/data.priority-map {:mvn/version "1.0.0"}}
  :aliases
  {:dev {:extra-paths ["dev/src" "test"]
         :extra-deps {juxt/clip {:mvn/version "0.22.0"}
