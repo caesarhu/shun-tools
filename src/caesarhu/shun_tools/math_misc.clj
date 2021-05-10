@@ -7,8 +7,7 @@
 (def squares (->> integers (filter odd?) (reductions +)))
 
 (defn is-square? [n]
-  (let [sqrt (Math/sqrt n)]
-    (== sqrt (int sqrt))))
+  (zero? (last (math/exact-integer-sqrt n))))
 
 (defn triangle [n] (quot (* n (inc n)) 2))
 
@@ -143,3 +142,11 @@
 (defn is-hexagonal?
   [x]
   (quadratic-root-pred? pos-int? 2 -1 (- x)))
+
+(defn expand-continued-fraction [n]
+  (let [a0 (int (Math/sqrt n))]
+    (loop [m 0, d 1, a a0, acc [a0]]
+      (if (= a (* 2 a0))
+        acc
+        (let [m (- (* d a) m), d (/ (- n (* m m)) d), a (int (/ (+ a0 m) d))]
+          (recur m d a (conj acc a)))))))
