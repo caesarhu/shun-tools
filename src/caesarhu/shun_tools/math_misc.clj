@@ -73,25 +73,23 @@
          (map bigint)
          (reductions *))))
 
-(def factorial
-  (memoize
-    (fn [n]
-      (first (drop n factorial-seq)))))
+(defn factorial
+  [n]
+  (first (drop n factorial-seq)))
 
 (defn sum-of [func n]
   (->> (digits n)
        (map func)
        (reduce +)))
 
-(def divisors
-  (memoize
-    (fn [n]
-      (let [f (fn [d xs]
-                  (cond
-                    (<= d 1)          (cons 1 xs) 
-                    (zero? (rem n d)) (recur (dec d) (cons d xs))
-                    :else             (recur (dec d) xs)))]
-          (f (inc (quot n 2)) (list n))))))
+(defn divisors
+  [n]
+  (let [f (fn [d xs]
+              (cond
+                (<= d 1)          (cons 1 xs)
+                (zero? (rem n d)) (recur (dec d) (cons d xs))
+                :else             (recur (dec d) xs)))]
+      (f (inc (quot n 2)) (list n))))
 
 (defn count-divisors [n]
   (->> (prime-factors-of n)
