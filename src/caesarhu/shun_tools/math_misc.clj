@@ -122,8 +122,6 @@
 (defn aliquot-sum [n]
   (- (sigma 1 n) n))
 
-(def any? (complement not-any?))
-
 (defn quadratic-root
   [a b c]
   (let [discriminant (- (* b b) (* 4 a c))]
