@@ -34,9 +34,9 @@
                   [(+ (*' x xk) (*' d y yk))
                    (+ (*' x yk) (*' y xk))])
            solutions (iterate prod [x y])]
-       (if (pos? r)
-         solutions
-         (->> (partition 2 solutions)
-              (map first))))))
+       (cond
+         (= 1 r) solutions
+         (= -1 r) (->> (partition 2 solutions)
+                       (map first))))))
   ([d]
    (pell-solutions d 1)))

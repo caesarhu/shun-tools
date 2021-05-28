@@ -133,7 +133,7 @@
 
 (defn quadratic-root-pred?
   [pred a b c]
-  (any? pred (quadratic-root a b c)))
+  (some pred (quadratic-root a b c)))
 
 (defn is-hexagonal?
   [x]
