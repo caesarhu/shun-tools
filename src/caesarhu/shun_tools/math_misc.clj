@@ -1,6 +1,6 @@
 (ns caesarhu.shun-tools.math-misc
   (:require [clojure.math.numeric-tower :as math]
-            [caesarhu.shun-tools.primes :refer :all]))
+            [caesarhu.shun-tools.primes :as p]))
 
 (def integers (iterate inc 1))
 
@@ -81,17 +81,23 @@
        (map func)
        (reduce +)))
 
+(defn product-coll
+  [c1 c2]
+  (cond
+    (empty? c1) c2
+    (empty? c2) c1
+    :else (for [x c1 y c2]
+            (* x y))))
+
 (defn divisors
   [n]
-  (let [f (fn [d xs]
-              (cond
-                (<= d 1)          (cons 1 xs)
-                (zero? (rem n d)) (recur (dec d) (cons d xs))
-                :else             (recur (dec d) xs)))]
-      (f (inc (quot n 2)) (list n))))
+  (let [power-seq (fn [n power]
+                    (for [i (range (inc power))]
+                      (math/expt n i)))]
+    (reduce product-coll (map #(apply power-seq %) (frequencies (p/prime-factors-of n))))))
 
 (defn count-divisors [n]
-  (->> (prime-factors-of n)
+  (->> (p/prime-factors-of n)
        frequencies
        vals
        (map inc)
@@ -99,7 +105,7 @@
 
 (defn smallest-dividee [num-divisors]
   (let [f (fn [a b] (math/expt a (dec b)))]
-    (reduce * (map f primes (reverse (prime-factors-of num-divisors))))))
+    (reduce * (map f p/primes (reverse (p/prime-factors-of num-divisors))))))
 
 (defmacro fmt [^String string]
   (let [-re #"#\{(.*?)\}"
@@ -117,7 +123,7 @@
                 :else     (quot 
                             (dec (math/expt p (* (inc e) k)))
                             (dec (math/expt p k))))))]
-    (->> (prime-factors-of n) frequencies (map term) (reduce *))))
+    (->> (p/prime-factors-of n) frequencies (map term) (reduce *))))
 
 (defn aliquot-sum [n]
   (- (sigma 1 n) n))
