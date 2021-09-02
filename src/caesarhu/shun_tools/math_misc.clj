@@ -47,7 +47,7 @@
   ([xs] (to-number xs 10))
   ([xs radix]
    (let [index (map #(math/expt radix %) (range))]
-     (reduce + (map * index (reverse xs))))))
+     (reduce +' (map *' index (reverse xs))))))
 
 (defn char-to-int [c]
   (- (int c) 48))
