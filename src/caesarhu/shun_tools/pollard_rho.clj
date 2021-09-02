@@ -38,7 +38,7 @@
              q 1]
         (let [t (rho t c n)
               r (double-rho r c n)
-              q (mod (* q (math/abs (- t r))) n)]
+              q (mod (*' q (math/abs (-' t r))) n)]
           (cond
             (or (zero? q) (= t r)) (recur (rand-n) 0 0 (inc step) 1)
             (round-set (mod step round)) (let [d (math/gcd q n)]
