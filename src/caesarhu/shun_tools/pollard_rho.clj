@@ -1,7 +1,8 @@
 (ns caesarhu.shun-tools.pollard-rho
   (:require [caesarhu.shun-tools.math-misc :as misc]
             [caesarhu.shun-tools.miller-rabin :refer [deterministic-test]]
-            [clojure.math.numeric-tower :as math]))
+            [clojure.math.numeric-tower :as math]
+            [clojure.math.combinatorics :as comb]))
 
 (defn rand-bigint
   [n]
@@ -71,9 +72,17 @@
   [n]
   (--factorization {n 1}))
 
+(defn divisors
+  [n]
+  (->> (prime-factors n)
+       (map (fn [[k v]] (repeat v k)))
+       flatten
+       (comb/subsets)
+       (map #(apply * %))))
+
 (comment
   (time (prime-factors (rand-bigint (misc/to-number (repeat 32 9)))))
   (time (prime-factors 57121))
-  (time (prime-factors 600851475143))
+  (time (divisors 1000))
   (time (prime-factors (*' 1238926361552897 93461639715357977769163558199606896584051237541638188580280321)))
   )
