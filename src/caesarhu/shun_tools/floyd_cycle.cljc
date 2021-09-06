@@ -1,7 +1,5 @@
 (ns caesarhu.shun-tools.floyd-cycle)
 
-(ns caesarhu.tools.floyd-cycle)
-
 ; Floyd Cycle Detection Algorithm, 又稱為龜免賽跑算法
 
 (defn double-eval
