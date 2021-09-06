@@ -13,64 +13,74 @@
           (misc/to-number 2)
           (mod n)))))
 
-(defn- rho
+(defn double-eval
+  [f x0]
+  (f (f x0)))
+
+(defn rho
   [x c n]
   (mod (+' (*' x x) c) n))
 
-(defn- double-rho
-  [x c n]
-  (-> (rho x c n)
-      (rho c n)))
+(defn frho
+  [c n]
+  #(rho % c n))
+
+(defn floyd
+  [c n]
+  (let [next (frho c n)
+        round 256
+        round-set (set [1 2 4 8 16 32 64 128])]
+    (loop [tortoise 0
+           hare 0
+           q 1
+           step 1]
+      (let [next-tortoise (next tortoise)
+            next-hare (double-eval next hare)
+            q (mod (*' q (math/abs (-' next-tortoise next-hare))) n)]
+        (cond
+          (or (zero? q) (= next-tortoise next-hare)) nil
+          (round-set (mod step round)) (let [g (math/gcd q n)]
+                                         (if (> g 1)
+                                           g
+                                           (recur next-tortoise next-hare q (inc step))))
+          :else (recur next-tortoise next-hare q (inc step)))))))
 
 (defn pollard-rho
   [n]
-  (let [rand-n #(inc (rand-bigint (dec n)))
-        round 256
-        round-set (set [0 1 2 4 8 16 32 64 128])]
-    (cond
-      (= n 4) 2
-      (deterministic-test n) n
-      :else
-      (loop [c (rand-n)
-             t 0
-             r 0
-             step 0
-             q 1]
-        (let [t (rho t c n)
-              r (double-rho r c n)
-              q (mod (*' q (math/abs (-' t r))) n)]
-          (cond
-            (or (zero? q) (= t r)) (recur (rand-n) 0 0 (inc step) 1)
-            (round-set (mod step round)) (let [d (math/gcd q n)]
-                                           (if (> d 1)
-                                             d
-                                             (recur c t r (inc step) q)))
-            :else (recur c t r (inc step) q)))))))
+  (cond
+    (= n 4) 2
+    (deterministic-test n) n
+    :else
+    (loop [c (inc (rand-bigint (dec n)))]
+      (if-let [d (floyd c n)]
+        d
+        (recur (inc (rand-bigint (dec n))))))))
 
 (defn- power-of
   [n p]
-  (let [[q power] (last (for [power (range)
-                              :let [pp (math/expt p power)]
-                              :while (zero? (mod n pp))]
-                          [(quot n pp) power]))]
-    [q [p power]]))
+  (loop [n n
+         power 0]
+    (if (zero? (mod n p))
+      (recur (quot n p) (inc power))
+      power)))
 
-(defn- --factorization
+(defn- factorization
   [m]
   (let [new-m (apply merge-with +
                      (for [[k v] m]
                        (let [x (pollard-rho k)
-                             [q [p power]] (power-of k x)
+                             power (power-of k x)
+                             q (quot k (math/expt x power))
                              qm (when (> q 1)
                                   {q v})]
-                         (merge-with + qm {p (* power v)}))))]
+                         (merge-with + qm {x (* power v)}))))]
     (if (= m new-m)
       new-m
       (recur new-m))))
 
 (defn prime-factors
   [n]
-  (--factorization {n 1}))
+  (factorization {n 1}))
 
 (defn divisors
   [n]
@@ -78,11 +88,12 @@
        (map (fn [[k v]] (repeat v k)))
        flatten
        (comb/subsets)
-       (map #(apply * %))))
+       (map #(apply * %))
+       sort))
 
 (comment
-  (time (prime-factors (rand-bigint (misc/to-number (repeat 32 9)))))
-  (time (prime-factors 57121))
-  (time (divisors 1000))
+  (time (prime-factors (rand-bigint (math/expt 10 18))))
+  (time (divisors 600851475143))
+  (time (prime-factors 600851475143))
   (time (prime-factors (*' 1238926361552897 93461639715357977769163558199606896584051237541638188580280321)))
   )
