@@ -59,11 +59,14 @@
             q (mod (*' q (math/abs (-' tortoise next-hare))) n)]
         (cond
           (or (zero? q) (= tortoise next-hare)) nil
-          (= step power)
-          (let [g (math/gcd q n)]
-            (if (> g 1)
-              g
-              (recur next-hare next-hare 1 1 (* 2 power))))
+          (= step power) (let [g (math/gcd q n)]
+                           (if (> g 1)
+                             g
+                             (recur next-hare next-hare 1 1 (* 2 power))))
+          (zero? (mod step round)) (let [g (math/gcd q n)]
+                                     (if (> g 1)
+                                       g
+                                       (recur tortoise next-hare q (inc step) power)))
           :else (recur tortoise next-hare q (inc step) power))))))
 
 (defn pollard-rho
