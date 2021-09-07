@@ -2,7 +2,8 @@
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
         org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
         org.clojure/math.combinatorics {:mvn/version "0.1.6"}
-        org.clojure/data.priority-map {:mvn/version "1.0.0"}}
+        org.clojure/data.priority-map {:mvn/version "1.0.0"}
+        criterium/criterium {:mvn/version "0.4.6"}}
  :aliases
  {:dev {:extra-paths ["dev/src" "test"]
         :extra-deps {juxt/clip {:mvn/version "0.23.0"}

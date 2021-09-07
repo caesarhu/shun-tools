@@ -59,13 +59,11 @@
             q (mod (*' q (math/abs (-' tortoise next-hare))) n)]
         (cond
           (or (zero? q) (= tortoise next-hare)) nil
-          (or (= step power) (zero? (mod step round)))
+          (= step power)
           (let [g (math/gcd q n)]
             (if (> g 1)
               g
-              (if (= step power)
-                (recur next-hare next-hare q (inc step) (* 2 power))
-                (recur tortoise next-hare q (inc step) power))))
+              (recur next-hare next-hare 1 1 (* 2 power))))
           :else (recur tortoise next-hare q (inc step) power))))))
 
 (defn pollard-rho
@@ -80,7 +78,7 @@
          d
          (recur (inc (rand-bigint (dec n))))))))
   ([n]
-   (pollard-rho n floyd)))
+   (pollard-rho n brent)))
 
 (defn- power-of
   [n p]
@@ -122,7 +120,12 @@
        sort))
 
 (comment
+  (dotimes [n 10]
+    (time (pollard-rho (*' 108425052802046107N 1530257445586501N) brent))
+    (println "brent")
+    (time (pollard-rho (*' 108425052802046107N 1530257445586501N) floyd))
+    (println "floyd"))
+  (time (prime-factors (rand-bigint (math/expt 10 24))))
   (time (prime-factors 600851475143))
   (time (divisors 600851475143))
-  ()
   )
