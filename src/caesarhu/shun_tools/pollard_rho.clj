@@ -63,10 +63,6 @@
                            (if (> g 1)
                              g
                              (recur next-hare next-hare 1 1 (* 2 power))))
-          (zero? (mod step round)) (let [g (math/gcd q n)]
-                                     (if (> g 1)
-                                       g
-                                       (recur tortoise next-hare 1 (inc step) power)))
           :else (recur tortoise next-hare q (inc step) power))))))
 
 (defn pollard-rho
@@ -127,7 +123,8 @@
    (divisors n brent)))
 
 (comment
-  (time (prime-factors (rand-bigint (math/expt 10 24)) floyd))
+  (time (prime-factors (rand-bigint (math/expt 10 24))))
+  (time (prime-factors (*' 4972368089129346109N 4972368089129346109N)))
   (time (prime-factors 600851475143))
   (time (divisors 600851475143))
   )
