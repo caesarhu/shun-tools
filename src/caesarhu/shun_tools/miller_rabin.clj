@@ -60,3 +60,7 @@
               (< n 3317044064679887385961981) (not-any? #(= COMPOSITE (individual-deterministic-test % d n s)) [2 3 5 7 11 13 17 19 23 29 31 37 41])
               :else (let [k (min (dec n) (int (math/expt (Math/log n) 2)))]
                       (not-any? #(= COMPOSITE (individual-deterministic-test % d n s)) (range 2 (inc k))))))))
+
+(defn is-prime?
+  [n]
+  (deterministic-test n))
