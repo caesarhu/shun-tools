@@ -66,7 +66,7 @@
           (zero? (mod step round)) (let [g (math/gcd q n)]
                                      (if (> g 1)
                                        g
-                                       (recur tortoise next-hare q (inc step) power)))
+                                       (recur tortoise next-hare 1 (inc step) power)))
           :else (recur tortoise next-hare q (inc step) power))))))
 
 (defn pollard-rho
@@ -95,7 +95,7 @@
   ([m f]
    (let [new-m (apply merge-with +
                       (for [[k v] m]
-                        (let [x (f k)
+                        (let [x (pollard-rho k f)
                               power (power-of k x)
                               q (quot k (math/expt x power))
                               qm (when (> q 1)
@@ -105,30 +105,29 @@
        new-m
        (recur new-m f))))
   ([m]
-   (factorization m pollard-rho)))
+   (factorization m brent)))
 
 (defn prime-factors
-  [n]
-  (if (<= n 1)
-    nil
-    (factorization {n 1})))
+  ([n f]
+   (if (<= n 1)
+     nil
+     (factorization {n 1} f)))
+  ([n]
+   (prime-factors n brent)))
 
 (defn divisors
-  [n]
-  (->> (prime-factors n)
-       (map (fn [[k v]] (repeat v k)))
-       flatten
-       (comb/subsets)
-       (map #(apply * %))
-       sort))
+  ([n f]
+   (->> (prime-factors n f)
+        (map (fn [[k v]] (repeat v k)))
+        flatten
+        (comb/subsets)
+        (map #(apply * %))
+        sort))
+  ([n]
+   (divisors n brent)))
 
 (comment
-  (dotimes [n 10]
-    (time (pollard-rho (*' 108425052802046107N 1530257445586501N) brent))
-    (println "brent")
-    (time (pollard-rho (*' 108425052802046107N 1530257445586501N) floyd))
-    (println "floyd"))
-  (time (prime-factors (rand-bigint (math/expt 10 24))))
+  (time (prime-factors (rand-bigint (math/expt 10 24)) floyd))
   (time (prime-factors 600851475143))
   (time (divisors 600851475143))
   )
