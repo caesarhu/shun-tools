@@ -146,11 +146,11 @@
   (quadratic-root-pred? pos-int? 2 -1 (- x)))
 
 (defn expand-continued-fraction [n]
-  (let [a0 (int (Math/sqrt n))]
+  (let [a0 (first (math/exact-integer-sqrt n))]
     (loop [m 0, d 1, a a0, acc [a0]]
       (if (= a (* 2 a0))
         acc
-        (let [m (- (* d a) m), d (/ (- n (* m m)) d), a (int (/ (+ a0 m) d))]
+        (let [m (- (* d a) m), d (/ (- n (* m m)) d), a (quot (+ a0 m) d)]
           (recur m d a (conj acc a)))))))
 
 (defn power-mod
