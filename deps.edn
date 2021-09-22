@@ -2,7 +2,7 @@
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
         org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
         org.clojure/math.combinatorics {:mvn/version "0.1.6"}
-        org.clojure/data.priority-map {:mvn/version "1.0.0"}
+        org.clojure/data.priority-map {:mvn/version "1.1.0"}
         criterium/criterium {:mvn/version "0.4.6"}}
  :aliases
  {:dev {:extra-paths ["dev/src" "test"]
@@ -16,12 +16,12 @@
                  :sha "dd6da11611eeb87f08780a30ac8ea6012d4c05ce"}}
    :main-opts ["-m" "cognitect.test-runner"
                "-d" "test"]}
-  :jar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.297"}}
+  :jar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.303"}}
         :exec-fn hf.depstar/jar
         :exec-args {:jar "shun-tools.jar" :sync-pom true}}
-  :install {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
+  :install {:replace-deps {slipset/deps-deploy {:mvn/version "0.2.0"}}
             :exec-fn deps-deploy.deps-deploy/deploy
             :exec-args {:installer :local :artifact "shun-tools.jar"}}
-  :deploy {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
+  :deploy {:replace-deps {slipset/deps-deploy {:mvn/version "0.2.0"}}
            :exec-fn deps-deploy.deps-deploy/deploy
            :exec-args {:installer :remote :artifact "shun-tools.jar"}}}}
