@@ -6,7 +6,7 @@
         criterium/criterium {:mvn/version "0.4.6"}}
  :aliases
  {:dev {:extra-paths ["dev/src" "test"]
-        :extra-deps {juxt/clip {:mvn/version "0.23.0"}
+        :extra-deps {juxt/clip {:mvn/version "0.24.0"}
                      org.clojure/tools.namespace {:mvn/version "1.1.0"}}}
   :test {:extra-paths ["test"]
          :extra-deps {org.clojure/test.check {:mvn/version "1.1.0"}}}
