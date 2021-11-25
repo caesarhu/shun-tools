@@ -1,9 +1,20 @@
 (ns user
-  (:require [juxt.clip.repl :refer [start stop set-init! system]]
-            [clojure.tools.namespace.repl :refer [set-refresh-dirs]]))
+  (:require [caesarhu.shun-tools.or-tools.zebra :as z])
+  (:import com.google.ortools.Loader
+           caesarhu.shun-tools.or-tools.MyCpSolverSolutionCallback
+           [com.google.ortools.sat CpModel CpSolver CpSolverStatus IntVar CpSolverSolutionCallback]))
 
-(defn reset
+(Loader/loadNativeLibraries)
+
+(defn count-solutions
   []
-  (clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
-  (set-init! (fn []))
-  (juxt.clip.repl/reset))
+  (let [model (CpModel.)
+        numVals 3
+        x (.newIntVar model 0 (dec numVals) "x")
+        y (.newIntVar model 0 (dec numVals) "y")
+        z (.newIntVar model 0 (dec numVals) "z")
+        _ (.addDifferent model x y)
+        cb (new MyCpSolverSolutionCallback (to-array [x y z]))
+        solver (CpSolver.)]
+    (.setEnumerateAllSolutions (.getParameters solver) true)
+    (.solve solver model cb)))

@@ -16,4 +16,4 @@
 /.idea
 /.clj-kondo
 /.lsp
-/.portal
+.portal/

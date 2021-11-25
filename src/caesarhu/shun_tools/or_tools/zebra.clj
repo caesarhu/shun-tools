@@ -1,8 +1,11 @@
-(ns caesarhu.shun-tools.or-tools
+(ns caesarhu.shun-tools.or-tools.zebra
   (:import  [com.google.ortools Loader]
             [com.google.ortools.algorithms KnapsackSolver KnapsackSolver$SolverType]
             [com.google.ortools.constraintsolver ConstraintSolverParameters IntVar Solver DecisionBuilder]
             [com.google.ortools.linearsolver MPSolver$OptimizationProblemType MPSolver]))
+
+
+; base on https://github.com/hellonico/zebra
 
 (Loader/loadNativeLibraries)
 
