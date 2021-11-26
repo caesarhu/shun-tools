@@ -9,16 +9,19 @@
 (defn count-solutions
   []
   (let [counter (atom 0)
-        cb (proxy [CpSolverSolutionCallback] []
-             (onSolutionCallback []
-               (swap! counter inc)))
         model (CpModel.)
         numVals 3
         x (.newIntVar model 0 (dec numVals) "x")
         y (.newIntVar model 0 (dec numVals) "y")
         z (.newIntVar model 0 (dec numVals) "z")
         _ (.addDifferent model x y)
-        solver (CpSolver.)]
+        solver (CpSolver.)
+        cb (proxy [CpSolverSolutionCallback] []
+             (onSolutionCallback []
+               (println (.value this x))
+               (println (.value this y))
+               (println (.value this z))
+               (swap! counter inc)))]
     (.setEnumerateAllSolutions (.getParameters solver) true)
     (.solve solver model cb)
     @counter))
