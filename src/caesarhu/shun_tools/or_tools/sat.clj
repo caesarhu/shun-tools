@@ -15,5 +15,5 @@
                (swap! counter inc)))
         solver (CpSolver.)]
     (.setEnumerateAllSolutions (.getParameters solver) true)
-    (.solve solver model cb)
-    {:count @counter :values @values}))
+    (let [status (.solve solver model cb)]
+      {:count @counter :values @values :status status})))
