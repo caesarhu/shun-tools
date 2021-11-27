@@ -32,7 +32,7 @@
       {:count @counter :values @values :status status})))
 
 (defn count-solutions
-  [model vars]
+  [model]
   (let [counter (atom 0)
         cb (proxy [CpSolverSolutionCallback] []
              (onSolutionCallback []
