@@ -21,7 +21,7 @@
     (.addAllDifferent model (into-array queens))
     (linear-distinct model diag1)
     (linear-distinct model diag2)
-    (sat/count-solutions model queens)))
+    (sat/count-solutions model)))
 
 (defn queens-clojure
   [n]
@@ -29,5 +29,6 @@
           (combo/permutations (range 1 (inc n)))))
 
 (comment
-  (time (solve-queens 11))
+  (time (solve-queens 10))
+  (time (count (queens-clojure 10)))
   )
